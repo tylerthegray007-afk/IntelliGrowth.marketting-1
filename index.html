@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IntelliGrowth Marketing — Luxury AI Systems</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#ffffff;
+      color:#0f0f0f;
+      overflow-x:hidden;
+    }
+
+    ::selection{
+      background:#111;
+      color:#fff;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar{
+      width:10px;
+    }
+
+    ::-webkit-scrollbar-track{
+      background:#f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background:#111;
+      border-radius:999px;
+    }
+
+    /* Loader */
+    #loader{
+      position:fixed;
+      inset:0;
+      background:white;
+      z-index:99999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:20px;
+      transition:all .8s ease;
+    }
+
+    .loader-ring{
+      width:80px;
+      height:80px;
+      border:2px solid #ddd;
+      border-top:2px solid #111;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+    }
+
+    @keyframes spin{
+      100%{
+        transform:rotate(360deg);
+      }
+    }
+
+    /* Cursor Glow */
+    .cursor-glow{
+      width:400px;
+      height:400px;
+      background:radial-gradient(circle, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0) 70%);
+      position:fixed;
+      pointer-events:none;
+      z-index:0;
+      transform:translate(-50%, -50%);
+      mix-blend-mode:multiply;
+    }
+
+    /* Navbar Blur */
+    .glass-nav{
+      background:rgba(255,255,255,0.72);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.4);
+      box-shadow:0 10px 40px rgba(0,0,0,0.06);
+    }
+
+    /* Cards */
+    .glass-card{
+      background:rgba(255,255,255,0.75);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.7);
+      box-shadow:
+      0 20px 50px rgba(0,0,0,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .premium-card{
+      transition:all .5s cubic-bezier(.19,1,.22,1);
+    }
+
+    .premium-card:hover{
+      transform:translateY(-12px);
+      box-shadow:0 35px 80px rgba(0,0,0,0.12);
+    }
+
+    /* Hero Gradient */
+    .hero-gradient{
+      background:
+      radial-gradient(circle at top left, rgba(0,0,0,0.08), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(0,0,0,0.05), transparent 25%),
+      linear-gradient(to bottom, #ffffff, #fafafa);
+    }
+
+    /* Floating Animation */
+    @keyframes floating{
+      0%{transform:translateY(0px);}
+      50%{transform:translateY(-12px);}
+      100%{transform:translateY(0px);}
+    }
+
+    .floating{
+      animation:floating 5s ease-in-out infinite;
+    }
+
+    .floating2{
+      animation:floating 7s ease-in-out infinite;
+    }
+
+    .floating3{
+      animation:floating 9s ease-in-out infinite;
+    }
+
+    /* Gradient Text */
+    .gradient-text{
+      background:linear-gradient(to right,#000,#666,#000);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* Glow Buttons */
+    .glow-btn{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .glow-btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+      transform:translateX(-100%);
+      transition:.8s;
+    }
+
+    .glow-btn:hover::before{
+      transform:translateX(100%);
+    }
+
+    /* Progress Bar */
+    #progressBar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:0%;
+      height:3px;
+      background:#111;
+      z-index:999999;
+    }
+
+    /* AI Grid */
+    .ai-grid{
+      background-image:
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size:40px 40px;
+    }
+
+    /* FAQ */
+    .faq-content{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .5s ease;
+    }
+
+    /* Particles */
+    .particle{
+      position:absolute;
+      border-radius:999px;
+      background:rgba(0,0,0,0.08);
+      animation:floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle{
+      0%{
+        transform:translateY(0px);
+        opacity:0;
+      }
+      10%{
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-100vh);
+        opacity:0;
+      }
+    }
+
+    /* Magnetic Button */
+    .magnetic{
+      transition:transform .2s ease;
+    }
+
+    /* Marquee */
+    .marquee{
+      white-space:nowrap;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .marquee-track{
+      display:inline-block;
+      animation:marquee 25s linear infinite;
+    }
+
+    @keyframes marquee{
+      from{
+        transform:translateX(0);
+      }
+      to{
+        transform:translateX(-50%);
+      }
+    }
+
+    /* Testimonial Slider */
+    .testimonial-track{
+      display:flex;
+      transition:transform .8s ease;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu{
+      transition:all .4s ease;
+      transform:translateY(-20px);
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .mobile-menu.active{
+      transform:translateY(0);
+      opacity:1;
+      pointer-events:all;
+    }
+
+  </style>
+</head>
+<body class="relative">
+
+<!-- Progress -->
+<div id="progressBar"></div>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow hidden md:block"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-ring"></div>
+  <h2 class="text-2xl font-semibold tracking-wide">IntelliGrowth Marketing</h2>
+  <p class="text-gray-500">Luxury AI Systems For Modern Businesses</p>
+</div>
+
+<!-- Particles -->
+<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/923147777012"
+   target="_blank"
+   class="fixed bottom-6 right-6 z-50 group">
+  <div class="relative">
+    <div class="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-40 animate-pulse"></div>
+    <div class="w-16 h-16 rounded-full glass-card flex items-center justify-center text-green-600 text-2xl group-hover:scale-110 transition-all duration-500">
+      <i class="fab fa-whatsapp"></i>
+    </div>
+  </div>
+</a>
+
+<!-- Navbar -->
+<nav class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-7xl glass-nav rounded-2xl px-6 py-4">
+  <div class="flex items-center justify-between">
+
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center font-bold">
+        IG
+      </div>
+      <div>
+        <h1 class="font-bold text-lg">IntelliGrowth Marketing</h1>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-10 text-sm font-medium">
+      <a href="#home" class="nav-link hover:text-gray-500 transition">Home</a>
+      <a href="#about" class="nav-link hover:text-gray-500 transition">About</a>
+      <a href="#services" class="nav-link hover:text-gray-500 transition">Services</a>
+      <a href="#showcase" class="nav-link hover:text-gray-500 transition">AI Systems</a>
+      <a href="#testimonials" class="nav-link hover:text-gray-500 transition">Testimonials</a>
+      <a href="#faq" class="nav-link hover:text-gray-500 transition">FAQ</a>
+      <a href="#contact" class="nav-link hover:text-gray-500 transition">Contact</a>
+    </div>
+
+    <div class="hidden lg:flex">
+      <a href="https://wa.me/923147777012"
+         target="_blank"
+         class="magnetic glow-btn bg-black text-white px-6 py-3 rounded-full font-medium hover:scale-105 transition-all duration-500">
+        Talk With Us Instantly
+      </a>
+    </div>
+
+    <button id="menuBtn" class="lg:hidden text-2xl">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile -->
+  <div id="mobileMenu" class="mobile-menu lg:hidden mt-5">
+    <div class="glass-card rounded-2xl p-6 flex flex-col gap-5">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#showcase">AI Systems</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+
+      <a href="https://wa.me/923147777012"
+         target="_blank"
+         class="bg-black text-white rounded-full py-3 text-center">
+        Chat On WhatsApp
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="min-h-screen hero-gradient relative overflow-hidden flex items-center">
+
+  <div class="absolute inset-0 ai-grid opacity-50"></div>
+
+  <!-- Floating -->
+  <div class="absolute top-40 left-10 floating hidden lg:block">
+    <div class="glass-card rounded-3xl p-5 w-64">
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-sm font-medium">AI Conversion</span>
+        <span class="text-green-600 text-sm">+48%</span>
+      </div>
+      <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div class="h-full bg-black w-[80%] rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute top-64 right-16 floating2 hidden lg:block">
+    <div class="glass-card rounded-3xl p-5 w-72">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500">AI Receptionist</p>
+          <h3 class="font-bold text-xl">24/7 Active</h3>
+        </div>
+        <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-24 right-32 floating3 hidden lg:block">
+    <div class="glass-card rounded-3xl p-5 w-64">
+      <p class="text-sm text-gray-500 mb-2">Lead Automation</p>
+      <h3 class="text-3xl font-bold">12.8k</h3>
+      <p class="text-green-600 text-sm mt-2">+138% Growth</p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10 py-32">
+
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Left -->
+      <div>
+
+        <div class="inline-flex items-center gap-3 glass-card px-5 py-2 rounded-full mb-8">
+          <span class="w-2 h-2 bg-black rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium">
+            AI-Powered Growth For Elite Brands
+          </span>
+        </div>
+
+        <h1 class="text-5xl md:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tight mb-8">
+          Luxury Websites &
+          <span class="gradient-text">AI Systems</span>
+          That Scale Businesses
+        </h1>
+
+        <p class="text-xl text-gray-600 leading-relaxed max-w-2xl mb-10">
+          We build premium digital experiences, AI receptionists,
+          and intelligent automation systems for modern brands.
+        </p>
+
+        <div class="flex flex-wrap gap-5">
+
+          <a href="#contact"
+             class="magnetic glow-btn bg-black text-white px-8 py-5 rounded-full font-semibold hover:scale-105 transition-all duration-500 shadow-2xl">
+            Book Free Consultation
+          </a>
+
+          <a href="#services"
+             class="magnetic glass-card px-8 py-5 rounded-full font-semibold hover:scale-105 transition-all duration-500">
+            Explore Services
+          </a>
+
+        </div>
+
+        <div class="flex flex-wrap gap-8 mt-14">
+          <div>
+            <h3 class="text-4xl font-black counter" data-target="98">0</h3>
+            <p class="text-gray-500 mt-1">Client Satisfaction</p>
+          </div>
+
+          <div>
+            <h3 class="text-4xl font-black counter" data-target="240">0</h3>
+            <p class="text-gray-500 mt-1">Projects Delivered</p>
+          </div>
+
+          <div>
+            <h3 class="text-4xl font-black counter" data-target="24">0</h3>
+            <p class="text-gray-500 mt-1">AI Automation Systems</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right -->
+      <div class="relative">
+
+        <div class="glass-card rounded-[40px] p-8 shadow-2xl">
+
+          <!-- Top -->
+          <div class="flex items-center justify-between mb-10">
+            <div>
+              <p class="text-sm text-gray-500">IntelliGrowth AI Dashboard</p>
+              <h3 class="text-2xl font-bold">Business Intelligence</h3>
+            </div>
+
+            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-2 gap-5 mb-8">
+
+            <div class="bg-black text-white rounded-3xl p-6">
+              <p class="text-gray-300 text-sm">Conversion Growth</p>
+              <h3 class="text-4xl font-black mt-3">+312%</h3>
+            </div>
+
+            <div class="bg-gray-100 rounded-3xl p-6">
+              <p class="text-gray-500 text-sm">AI Response Time</p>
+              <h3 class="text-4xl font-black mt-3">0.8s</h3>
+            </div>
+
+          </div>
+
+          <!-- Chat -->
+          <div class="space-y-4">
+
+            <div class="flex justify-start">
+              <div class="bg-gray-100 rounded-3xl px-5 py-4 max-w-[80%]">
+                Hello 👋 How can IntelliGrowth assist your business today?
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <div class="bg-black text-white rounded-3xl px-5 py-4 max-w-[80%]">
+                I want an AI receptionist system with automation.
+              </div>
+            </div>
+
+            <div class="flex justify-start">
+              <div class="bg-gray-100 rounded-3xl px-5 py-4 max-w-[80%]">
+                Perfect. We can automate customer support, bookings, and lead qualification instantly.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom -->
+          <div class="mt-8 flex justify-between items-center">
+            <div class="flex -space-x-3">
+              <div class="w-12 h-12 rounded-full bg-black"></div>
+              <div class="w-12 h-12 rounded-full bg-gray-300"></div>
+              <div class="w-12 h-12 rounded-full bg-gray-500"></div>
+            </div>
+
+            <div class="text-right">
+              <p class="text-sm text-gray-500">Automation Efficiency</p>
+              <h3 class="font-bold text-2xl">94%</h3>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Marquee -->
+<section class="py-10 border-y border-gray-100 overflow-hidden">
+  <div class="marquee">
+    <div class="marquee-track text-4xl font-black tracking-tight text-gray-200">
+      Luxury AI Systems • Premium Websites & Intelligent Automation • AI-Powered Growth For Elite Brands • Where Luxury Design Meets AI • Automating The Future Of Business •
+      Luxury AI Systems • Premium Websites & Intelligent Automation • AI-Powered Growth For Elite Brands • Where Luxury Design Meets AI • Automating The Future Of Business •
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-32 relative">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <div>
+        <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+          <span class="text-sm font-semibold">About IntelliGrowth Marketing</span>
+        </div>
+
+        <h2 class="text-5xl md:text-6xl font-black leading-tight mb-8">
+          Where Luxury Design Meets AI
+        </h2>
+
+        <p class="text-lg text-gray-600 leading-relaxed mb-6">
+          IntelliGrowth Marketing helps businesses automate operations,
+          improve customer communication, increase sales, and build a premium online presence.
+        </p>
+
+        <p class="text-lg text-gray-600 leading-relaxed mb-10">
+          We specialize in luxury web experiences, AI receptionists,
+          intelligent automation systems, conversion-focused design,
+          smart integrations, and elite digital growth infrastructure.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-5">
+
+          <div class="glass-card rounded-3xl p-6">
+            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center mb-5">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="font-bold text-xl mb-3">Luxury Web Design</h3>
+            <p class="text-gray-500">
+              Premium interfaces engineered for trust, authority, and conversion.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-3xl p-6">
+            <div class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center mb-5">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3 class="font-bold text-xl mb-3">AI Automation</h3>
+            <p class="text-gray-500">
+              Intelligent systems designed to scale operations effortlessly.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="relative">
+
+        <div class="glass-card rounded-[40px] p-10 relative overflow-hidden">
+
+          <div class="absolute top-0 right-0 w-72 h-72 bg-black/5 rounded-full blur-3xl"></div>
+
+          <div class="space-y-8 relative z-10">
+
+            <div class="flex gap-5 items-start">
+              <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+
+              <div>
+                <h3 class="text-2xl font-bold mb-2">AI Receptionists</h3>
+                <p class="text-gray-500">
+                  24/7 smart customer interaction and appointment management systems.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-5 items-start">
+              <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+
+              <div>
+                <h3 class="text-2xl font-bold mb-2">Growth Optimization</h3>
+                <p class="text-gray-500">
+                  Advanced funnels and conversion systems engineered for scale.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-5 items-start">
+              <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <h3 class="text-2xl font-bold mb-2">Smart Integrations</h3>
+                <p class="text-gray-500">
+                  Connect CRMs, workflows, analytics, and AI into one seamless ecosystem.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="py-32 bg-[#fafafa] relative overflow-hidden">
+
+  <div class="absolute top-0 left-0 w-full h-full ai-grid opacity-50"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+    <div class="text-center mb-20">
+      <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+        <span class="text-sm font-semibold">Premium Services</span>
+      </div>
+
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        Elite Digital Growth Systems
+      </h2>
+
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Intelligent automation, luxury design, and AI-powered systems built for modern businesses.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-globe"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          Luxury Website Development
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• Ultra-modern websites</li>
+          <li>• Responsive design</li>
+          <li>• Premium UI/UX</li>
+          <li>• High conversion systems</li>
+        </ul>
+      </div>
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-headset"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          AI Receptionists
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• 24/7 customer handling</li>
+          <li>• Smart responses</li>
+          <li>• Appointment booking</li>
+          <li>• Automated communication</li>
+        </ul>
+      </div>
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-gears"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          AI Business Automation
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• Workflow systems</li>
+          <li>• Lead management</li>
+          <li>• CRM integrations</li>
+          <li>• Task automation</li>
+        </ul>
+      </div>
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          AI Chatbots
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• Intelligent support</li>
+          <li>• Sales automation</li>
+          <li>• Lead qualification</li>
+          <li>• Multilingual support</li>
+        </ul>
+      </div>
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-gem"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          Branding & Digital Presence
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• Premium visual identity</li>
+          <li>• Luxury online image</li>
+          <li>• Modern branding systems</li>
+        </ul>
+      </div>
+
+      <!-- Card -->
+      <div class="premium-card glass-card rounded-[32px] p-8">
+        <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          Growth Systems
+        </h3>
+
+        <ul class="space-y-3 text-gray-600">
+          <li>• Lead funnels</li>
+          <li>• Conversion optimization</li>
+          <li>• Automation pipelines</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- AI SHOWCASE -->
+<section id="showcase" class="py-32 relative overflow-hidden">
+
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-20">
+      <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+        <span class="text-sm font-semibold">AI Showcase</span>
+      </div>
+
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        Intelligent Systems Built For Scale
+      </h2>
+
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Futuristic AI experiences engineered for elite business growth.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+
+      <div class="lg:col-span-2 glass-card rounded-[40px] p-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/[0.03] to-transparent"></div>
+
+        <div class="relative z-10">
+
+          <div class="flex justify-between items-center mb-10">
+            <div>
+              <p class="text-gray-500">AI Workflow Automation</p>
+              <h3 class="text-3xl font-black">Smart Business Engine</h3>
+            </div>
+
+            <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+          </div>
+
+          <!-- Workflow -->
+          <div class="grid md:grid-cols-4 gap-5 items-center">
+
+            <div class="glass-card rounded-3xl p-6 text-center">
+              <i class="fa-solid fa-user-plus text-3xl mb-4"></i>
+              <h4 class="font-bold">Lead Capture</h4>
+            </div>
+
+            <div class="text-center text-2xl">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 text-center">
+              <i class="fa-solid fa-robot text-3xl mb-4"></i>
+              <h4 class="font-bold">AI Qualification</h4>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 text-center">
+              <i class="fa-solid fa-chart-simple text-3xl mb-4"></i>
+              <h4 class="font-bold">Conversion</h4>
+            </div>
+
+          </div>
+
+          <div class="mt-10 grid md:grid-cols-2 gap-8">
+
+            <div class="bg-black text-white rounded-[30px] p-8">
+              <p class="text-gray-400 mb-3">AI Calls Managed</p>
+              <h3 class="text-5xl font-black mb-5">18k+</h3>
+              <div class="h-2 bg-white/20 rounded-full overflow-hidden">
+                <div class="h-full bg-white rounded-full w-[85%]"></div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-[30px] p-8">
+              <p class="text-gray-500 mb-3">Customer Response Accuracy</p>
+              <h3 class="text-5xl font-black mb-5">96%</h3>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-black rounded-full w-[96%]"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="space-y-8">
+
+        <div class="glass-card rounded-[35px] p-8">
+          <div class="flex justify-between items-center mb-8">
+            <h3 class="font-black text-2xl">AI Assistant</h3>
+            <div class="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center">
+              <i class="fa-solid fa-sparkles"></i>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+
+            <div class="bg-gray-100 rounded-3xl px-5 py-4">
+              Appointment booked successfully.
+            </div>
+
+            <div class="bg-black text-white rounded-3xl px-5 py-4">
+              Customer automatically added to CRM.
+            </div>
+
+            <div class="bg-gray-100 rounded-3xl px-5 py-4">
+              Follow-up sequence activated.
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="glass-card rounded-[35px] p-8">
+          <h3 class="font-black text-2xl mb-8">
+            Smart Analytics
+          </h3>
+
+          <div class="space-y-6">
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Sales Growth</span>
+                <span>91%</span>
+              </div>
+
+              <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-black rounded-full w-[91%]"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Automation</span>
+                <span>84%</span>
+              </div>
+
+              <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-black rounded-full w-[84%]"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Lead Quality</span>
+                <span>97%</span>
+              </div>
+
+              <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-black rounded-full w-[97%]"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="py-32 bg-[#fafafa]">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-20">
+      <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+        <span class="text-sm font-semibold">Why Choose Us</span>
+      </div>
+
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        Built For Elite Business Growth
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="78">0</h3>
+        <p class="text-2xl font-bold mb-3">Faster Operations</p>
+        <p class="text-gray-500">Automate repetitive workflows and scale efficiently.</p>
+      </div>
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="24">0</h3>
+        <p class="text-2xl font-bold mb-3">24/7 AI Assistance</p>
+        <p class="text-gray-500">Always available intelligent customer communication.</p>
+      </div>
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="312">0</h3>
+        <p class="text-2xl font-bold mb-3">Higher Conversions</p>
+        <p class="text-gray-500">Conversion-focused systems designed to grow revenue.</p>
+      </div>
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="96">0</h3>
+        <p class="text-2xl font-bold mb-3">Smarter Communication</p>
+        <p class="text-gray-500">AI-driven engagement and customer experiences.</p>
+      </div>
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="84">0</h3>
+        <p class="text-2xl font-bold mb-3">Automation Efficiency</p>
+        <p class="text-gray-500">Save time while improving operational performance.</p>
+      </div>
+
+      <div class="glass-card rounded-[32px] p-10 premium-card">
+        <h3 class="text-6xl font-black mb-4 counter" data-target="100">0</h3>
+        <p class="text-2xl font-bold mb-3">Luxury Presence</p>
+        <p class="text-gray-500">Build authority with premium digital experiences.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="py-32 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-20">
+      <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+        <span class="text-sm font-semibold">Client Success</span>
+      </div>
+
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        Trusted By Modern Brands
+      </h2>
+    </div>
+
+    <div class="overflow-hidden">
+      <div id="testimonialTrack" class="testimonial-track">
+
+        <!-- Slide -->
+        <div class="min-w-full grid lg:grid-cols-3 gap-8">
+
+          <div class="glass-card rounded-[32px] p-8">
+            <div class="flex items-center gap-4 mb-6">
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop"
+                   class="w-16 h-16 rounded-full object-cover"/>
+              <div>
+                <h4 class="font-bold">James Carter</h4>
+                <p class="text-gray-500">Luxury Auto Group</p>
+              </div>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed">
+              “IntelliGrowth completely transformed our digital presence.
+              The AI automation system increased our leads dramatically.”
+            </p>
+          </div>
+
+          <div class="glass-card rounded-[32px] p-8">
+            <div class="flex items-center gap-4 mb-6">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop"
+                   class="w-16 h-16 rounded-full object-cover"/>
+              <div>
+                <h4 class="font-bold">Sophia Miller</h4>
+                <p class="text-gray-500">Elite Aesthetics</p>
+              </div>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed">
+              “The luxury website and AI receptionist system elevated our entire brand experience.”
+            </p>
+          </div>
+
+          <div class="glass-card rounded-[32px] p-8">
+            <div class="flex items-center gap-4 mb-6">
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300&auto=format&fit=crop"
+                   class="w-16 h-16 rounded-full object-cover"/>
+              <div>
+                <h4 class="font-bold">Michael Ross</h4>
+                <p class="text-gray-500">ScaleTech Solutions</p>
+              </div>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed">
+              “Our operations became smoother, faster, and significantly more profitable.”
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-32 bg-[#fafafa]">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <div class="text-center mb-20">
+      <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+        <span class="text-sm font-semibold">Frequently Asked Questions</span>
+      </div>
+
+      <h2 class="text-5xl md:text-6xl font-black mb-6">
+        Everything You Need To Know
+      </h2>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- FAQ Item -->
+      <div class="glass-card rounded-3xl overflow-hidden faq-item">
+        <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left">
+          <span class="font-bold text-lg">What businesses do you work with?</span>
+          <i class="fa-solid fa-plus transition-all duration-300"></i>
+        </button>
+
+        <div class="faq-content px-8">
+          <p class="pb-8 text-gray-600">
+            We work with modern brands, agencies, clinics, luxury businesses,
+            startups, and companies seeking intelligent automation and premium digital experiences.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-3xl overflow-hidden faq-item">
+        <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left">
+          <span class="font-bold text-lg">How do AI receptionists work?</span>
+          <i class="fa-solid fa-plus transition-all duration-300"></i>
+        </button>
+
+        <div class="faq-content px-8">
+          <p class="pb-8 text-gray-600">
+            AI receptionists handle calls, bookings, customer support,
+            lead qualification, and communication automatically 24/7.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-3xl overflow-hidden faq-item">
+        <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left">
+          <span class="font-bold text-lg">Can you automate my business?</span>
+          <i class="fa-solid fa-plus transition-all duration-300"></i>
+        </button>
+
+        <div class="faq-content px-8">
+          <p class="pb-8 text-gray-600">
+            Yes. We create tailored automation systems for workflows,
+            CRM management, communication, marketing, and operations.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-3xl overflow-hidden faq-item">
+        <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left">
+          <span class="font-bold text-lg">How long does a project take?</span>
+          <i class="fa-solid fa-plus transition-all duration-300"></i>
+        </button>
+
+        <div class="faq-content px-8">
+          <p class="pb-8 text-gray-600">
+            Timelines vary depending on complexity, but most premium systems
+            and websites are completed within 2–6 weeks.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-3xl overflow-hidden faq-item">
+        <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left">
+          <span class="font-bold text-lg">Are your websites mobile responsive?</span>
+          <i class="fa-solid fa-plus transition-all duration-300"></i>
+        </button>
+
+        <div class="faq-content px-8">
+          <p class="pb-8 text-gray-600">
+            Absolutely. Every website is engineered for flawless responsiveness across all devices.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-32 relative overflow-hidden">
+
+  <div class="absolute inset-0 ai-grid opacity-50"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <div>
+
+        <div class="inline-flex glass-card rounded-full px-5 py-2 mb-8">
+          <span class="text-sm font-semibold">Contact Us</span>
+        </div>
+
+        <h2 class="text-5xl md:text-6xl font-black leading-tight mb-8">
+          Let’s Build Your AI Growth System
+        </h2>
+
+        <p class="text-xl text-gray-600 leading-relaxed mb-10">
+          Premium websites, AI automation, intelligent communication systems,
+          and luxury digital experiences designed for modern businesses.
+        </p>
+
+        <div class="space-y-6">
+
+          <div class="flex items-center gap-5">
+            <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <div>
+              <p class="text-gray-500">Phone</p>
+              <h3 class="text-2xl font-bold">03147777012</h3>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-5">
+            <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div>
+              <p class="text-gray-500">Email</p>
+              <h3 class="text-2xl font-bold break-all">
+                abb1atkins009@gmail.com
+              </h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex gap-5 mt-10">
+
+          <a href="https://wa.me/923147777012"
+             target="_blank"
+             class="magnetic glow-btn bg-black text-white px-8 py-5 rounded-full font-semibold hover:scale-105 transition-all duration-500">
+            Chat On WhatsApp
+          </a>
+
+          <a href="mailto:abb1atkins009@gmail.com"
+             class="glass-card px-8 py-5 rounded-full font-semibold hover:scale-105 transition-all duration-500">
+            Send Email
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Form -->
+      <div class="glass-card rounded-[40px] p-10">
+
+        <form class="space-y-8">
+
+          <div>
+            <label class="block text-sm font-medium mb-3">Full Name</label>
+            <input type="text"
+                   placeholder="John Smith"
+                   class="w-full rounded-2xl border border-gray-200 px-6 py-5 outline-none focus:border-black transition-all bg-white/60"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-3">Email Address</label>
+            <input type="email"
+                   placeholder="you@example.com"
+                   class="w-full rounded-2xl border border-gray-200 px-6 py-5 outline-none focus:border-black transition-all bg-white/60"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-3">Business Type</label>
+            <input type="text"
+                   placeholder="Agency, Clinic, Startup..."
+                   class="w-full rounded-2xl border border-gray-200 px-6 py-5 outline-none focus:border-black transition-all bg-white/60"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-3">Project Details</label>
+            <textarea rows="5"
+                      placeholder="Tell us about your project..."
+                      class="w-full rounded-2xl border border-gray-200 px-6 py-5 outline-none focus:border-black transition-all resize-none bg-white/60"></textarea>
+          </div>
+
+          <button type="submit"
+                  class="w-full magnetic glow-btn bg-black text-white rounded-2xl py-5 font-bold text-lg hover:scale-[1.02] transition-all duration-500">
+            Book Free Consultation
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white py-20">
+
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid lg:grid-cols-4 gap-12 mb-16">
+
+      <div class="lg:col-span-2">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl bg-white text-black flex items-center justify-center font-black">
+            IG
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-black">
+              IntelliGrowth Marketing
+            </h2>
+          </div>
+        </div>
+
+        <p class="text-gray-400 max-w-xl leading-relaxed">
+          Premium Websites & Intelligent Automation.
+          Luxury AI Systems For Modern Businesses.
+        </p>
+
+      </div>
+
+      <div>
+        <h3 class="font-bold text-xl mb-6">Navigation</h3>
+
+        <div class="space-y-4 text-gray-400">
+          <a href="#home" class="block hover:text-white transition">Home</a>
+          <a href="#about" class="block hover:text-white transition">About</a>
+          <a href="#services" class="block hover:text-white transition">Services</a>
+          <a href="#contact" class="block hover:text-white transition">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-xl mb-6">Connect</h3>
+
+        <div class="space-y-4 text-gray-400">
+          <p>03147777012</p>
+          <p class="break-all">abb1atkins009@gmail.com</p>
+
+          <div class="flex gap-4 pt-3">
+
+            <a href="#" class="w-12 h-12 rounded-xl bg-white/10 hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center">
+              <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="#" class="w-12 h-12 rounded-xl bg-white/10 hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center">
+              <i class="fab fa-linkedin"></i>
+            </a>
+
+            <a href="https://wa.me/923147777012"
+               target="_blank"
+               class="w-12 h-12 rounded-xl bg-white/10 hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row gap-5 justify-between items-center">
+
+      <p class="text-gray-500">
+        © 2026 IntelliGrowth Marketing. All rights reserved.
+      </p>
+
+      <p class="text-gray-500">
+        Automating The Future Of Business
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+<script>
+
+  // LOADER
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("loader").style.opacity = "0";
+      document.getElementById("loader").style.pointerEvents = "none";
+    }, 1500);
+  });
+
+  // CURSOR GLOW
+  const glow = document.querySelector(".cursor-glow");
+
+  document.addEventListener("mousemove", (e) => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+  });
+
+  // PROGRESS BAR
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+
+    document.getElementById("progressBar").style.width = progress + "%";
+  });
+
+  // PARTICLES
+  const particlesContainer = document.getElementById("particles");
+
+  for(let i=0;i<25;i++){
+
+    const particle = document.createElement("div");
+
+    particle.classList.add("particle");
+
+    const size = Math.random() * 6 + 2;
+
+    particle.style.width = size + "px";
+    particle.style.height = size + "px";
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.bottom = "-20px";
+    particle.style.animationDuration = (Math.random() * 15 + 10) + "s";
+    particle.style.animationDelay = Math.random() * 10 + "s";
+
+    particlesContainer.appendChild(particle);
+  }
+
+  // MOBILE MENU
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("active");
+  });
+
+  // FAQ
+  document.querySelectorAll(".faq-item").forEach(item => {
+
+    const btn = item.querySelector(".faq-btn");
+    const content = item.querySelector(".faq-content");
+    const icon = item.querySelector("i");
+
+    btn.addEventListener("click", () => {
+
+      const isOpen = content.style.maxHeight;
+
+      document.querySelectorAll(".faq-content").forEach(c => {
+        c.style.maxHeight = null;
+      });
+
+      document.querySelectorAll(".faq-item i").forEach(i => {
+        i.style.transform = "rotate(0deg)";
+      });
+
+      if(!isOpen){
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.style.transform = "rotate(45deg)";
+      }
+
+    });
+
+  });
+
+  // COUNTERS
+  const counters = document.querySelectorAll(".counter");
+
+  counters.forEach(counter => {
+
+    const target = +counter.getAttribute("data-target");
+
+    ScrollTrigger.create({
+      trigger: counter,
+      start: "top 85%",
+      once: true,
+
+      onEnter: () => {
+
+        let current = 0;
+
+        const updateCounter = () => {
+
+          current += target / 60;
+
+          if(current < target){
+
+            counter.innerText = Math.floor(current);
+            requestAnimationFrame(updateCounter);
+
+          } else {
+
+            counter.innerText = target + (target < 100 ? "+" : "%");
+          }
+        }
+
+        updateCounter();
+      }
+    });
+  });
+
+  // GSAP
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray("section").forEach(section => {
+
+    gsap.from(section.children, {
+      opacity:0,
+      y:60,
+      duration:1.2,
+      stagger:0.15,
+      ease:"power4.out",
+      scrollTrigger:{
+        trigger:section,
+        start:"top 80%"
+      }
+    });
+
+  });
+
+  // PARALLAX
+  gsap.to(".floating", {
+    y:-30,
+    repeat:-1,
+    yoyo:true,
+    duration:4,
+    ease:"sine.inOut"
+  });
+
+  gsap.to(".floating2", {
+    y:-20,
+    repeat:-1,
+    yoyo:true,
+    duration:5,
+    ease:"sine.inOut"
+  });
+
+  gsap.to(".floating3", {
+    y:-35,
+    repeat:-1,
+    yoyo:true,
+    duration:6,
+    ease:"sine.inOut"
+  });
+
+  // MAGNETIC BUTTONS
+  document.querySelectorAll(".magnetic").forEach(btn => {
+
+    btn.addEventListener("mousemove", (e) => {
+
+      const rect = btn.getBoundingClientRect();
+
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.25}px)`;
+
+    });
+
+    btn.addEventListener("mouseleave", () => {
+      btn.style.transform = "translate(0px,0px)";
+    });
+
+  });
+
+  // ACTIVE NAV
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+      const sectionTop = section.offsetTop;
+
+      if(pageYOffset >= sectionTop - 200){
+        current = section.getAttribute("id");
+      }
+
+    });
+
+    navLinks.forEach(link => {
+
+      link.classList.remove("text-black");
+
+      if(link.getAttribute("href").includes(current)){
+        link.classList.add("text-black");
+      }
+
+    });
+
+  });
+
+  // TESTIMONIAL AUTO SLIDE
+  const testimonialTrack = document.getElementById("testimonialTrack");
+
+  let slide = 0;
+
+  setInterval(() => {
+
+    slide++;
+
+    if(slide > 0){
+      slide = 0;
+    }
+
+    testimonialTrack.style.transform = `translateX(-${slide * 100}%)`;
+
+  }, 5000);
+
+</script>
+
+</body>
+</html>
